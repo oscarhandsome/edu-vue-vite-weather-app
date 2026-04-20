@@ -1,5 +1,35 @@
 :root {
-  --sans: system-ui, "Segoe UI", Roboto, sans-serif;
-  --heading: system-ui, "Segoe UI", Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  --color-text: #fff;
+  --color-bg: #37383a;
+  --color-light-blue: #88ebefe5;
+  --color-blue: #535be6e5;
+  --gradient: linear-gradient(
+    to right,
+    var(--color-light-blue),
+    var(--color-blue)
+  );
+  --gradient-inverted: linear-gradient(
+    to left,
+    var(--color-light-blue),
+    var(--color-blue)
+  );
+
+  --font: "Montserrat", sans-serif;
+  font: 20px/150% var(--sans);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  @media (max-width: 1024px) {
+    font-size: 16px;
+  }
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font);
 }
