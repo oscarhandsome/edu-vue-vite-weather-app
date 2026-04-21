@@ -3,7 +3,12 @@ import { ref, provide, watch, onMounted } from "vue";
 import PanelLeft from "@/components/PanelLeft.vue";
 import PanelRight from "@/components/PanelRight.vue";
 // import Loader from "@/components/Loader.vue";
-import { BASE_URL, cityProvide, activeIndexProvide } from "./constants";
+import {
+  API_KEY,
+  BASE_URL,
+  cityProvide,
+  activeIndexProvide,
+} from "./constants";
 
 const data = ref();
 const error = ref();
@@ -25,19 +30,25 @@ async function getCity(city) {
   const params = new URLSearchParams({
     q: city,
     lang: "ru",
-    key: "673614efc16d4e6aaaa154714261204",
+    key: API_KEY,
     days: 3,
   });
-  const res = await fetch(`${BASE_URL}/forecast.json?${params.toString()}`);
-  const response = await res.json();
 
-  if (res.status != 200) {
-    error.value = response;
-    return;
+  try {
+    const res = await fetch(`${BASE_URL}/forecast.json?${params.toString()}`);
+    const response = await res.json();
+
+    if (res.status != 200) {
+      error.value = response;
+      return;
+    }
+
+    data.value = response;
+    current.value = data.value.forecast.forecastday[activeIndex.value];
+  } catch (errorIn) {
+    error.value = errorIn instanceof Error ? errorIn.message : "Network error";
+    alert(errorIn);
   }
-
-  data.value = response;
-  current.value = data.value.forecast.forecastday[activeIndex.value];
 }
 </script>
 

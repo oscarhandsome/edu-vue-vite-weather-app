@@ -3,6 +3,8 @@
   --color-bg: #37383a;
   --color-light-blue: #88ebefe5;
   --color-blue: #535be6e5;
+  --color-card-bg: #272e37;
+  --color-card-bg-hover: #3a434f;
   --gradient: linear-gradient(
     to right,
     var(--color-light-blue),

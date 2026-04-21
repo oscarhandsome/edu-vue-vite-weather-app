@@ -13,6 +13,8 @@ The project uses [Vue 3](https://vuejs.org/), [Vite](https://vite.dev/), and dat
 - Lets the user switch between forecast days.
 - Lets the user change the city directly from the UI.
 - Shows a basic error message when a city is not found.
+- Reads API configuration from environment variables.
+- Uses HTTPS for WeatherAPI requests.
 
 ## Tech Stack
 
@@ -28,6 +30,15 @@ The project uses [Vue 3](https://vuejs.org/), [Vite](https://vite.dev/), and dat
 
 ```bash
 npm install
+```
+
+### Configure environment variables
+
+Create a `.env` file in the project root:
+
+```env
+VITE_WEATHER_API_KEY=your_weatherapi_key
+VITE_WEATHER_API_URL=https://api.weatherapi.com/v1
 ```
 
 ### Start the development server
@@ -100,7 +111,7 @@ npm run preview
 - `src/components/PanelRight.vue` - renders stats, errors, the forecast section, and the city form
 - `src/components/CitySelect.vue` - manages city selection
 - `src/components/Weather/Index.vue` and `DayCard.vue` - render the forecast list and active day switching
-- `src/constants.js` - stores the API base URL, error map, and provide/inject keys
+- `src/constants.js` - reads env-based API configuration, stores the error map, and define provide/inject keys
 
 ## Architecture Notes
 
@@ -112,28 +123,27 @@ Strengths:
 
 Areas to improve:
 
-- The API key is hardcoded in the source code and should be moved to environment variables via `.env`.
-- The API base URL uses `http`, which may cause mixed-content issues in secure environments.
 - There is no dedicated `lint` script and no tests yet.
 - The API logic still lives directly in `App.vue`; over time it would be cleaner to move requests into a separate module such as `src/api/`.
 - The name `src/components/Weather/Index.vue` works, but something like `WeatherWeek.vue` would be clearer long term.
 
 ## Current Limitations
 
-- Error handling does not cover all API failure scenarios.
 - There is no active loading state yet, although the code already hints at one.
-- The forecast cards use `avgtemp_f` while the UI label shows `°C`, so the displayed units are currently inconsistent.
 - The project is currently tailored to the Russian language and `ru-RU` locale.
+- The API key is no longer hardcoded, but because requests still go directly from the browser, the key remains client-visible at runtime. A backend proxy would be needed to fully hide it.
 
 ## Verified
 
 - The production build completes successfully with `npm run build`.
-- The build currently reports a CSS warning caused by the `input:placeholder` selector in `src/components/BaseInput.vue`; `::placeholder` should be used instead.
+- WeatherAPI requests are configured through `.env` variables.
+- The API base URL now uses HTTPS.
+- Forecast cards now use Celsius consistently.
+- The previous CSS warning caused by `input:placeholder` is gone after simplifying the input styles.
 
 ## Suggested Next Steps
 
-- Move the API key and base URL into `.env`.
 - Add `npm run lint`.
-- Fix the temperature unit mismatch in forecast cards.
-- Add `isLoading` and more robust network error handling.
+- Add `isLoading` and finalize robust network error handling for fetch failures.
 - Separate API logic from the UI layer.
+- Add a backend proxy if the API key must be fully hidden from the client.

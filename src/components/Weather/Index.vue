@@ -12,7 +12,7 @@ const activeIndex = inject(activeIndexProvide);
     <DayCard
       v-for="(item, idx) in forecast"
       :weather-code="item.day.condition.code"
-      :temp="item.day.avgtemp_f"
+      :temp="item.day.avgtemp_c"
       :date="new Date(item.date)"
       :is-active="activeIndex == idx"
       @click="() => (activeIndex = idx)"
